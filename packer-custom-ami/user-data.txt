@@ -1,0 +1,3 @@
+#cloud-config
+repo_upgrade: security
+repo_releasever: 2014.09

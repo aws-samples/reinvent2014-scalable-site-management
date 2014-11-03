@@ -1,0 +1,44 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "security_group_ids": "",
+    "subnet_id": "",
+    "vpc_id": ""
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "us-east-1",
+    "source_ami": "ami-886ed3e0",
+    "instance_type": "{{user `instance_type`}}",
+    "ssh_username": "ec2-user",
+    "ami_name": "custom-2014.09-hvm {{isotime | clean_ami_name}}",
+    "ami_description": "Amazon Linux 2014.09 AMI (HVM).",
+    "security_group_ids": "{{user `security_group_ids`}}",
+    "subnet_id": "{{user `subnet_id`}}",
+    "vpc_id": "{{user `vpc_id`}}",
+    "user_data_file": "user-data.txt",
+    "ami_block_device_mappings": [
+      {
+          "device_name": "/dev/sdb",
+          "virtual_name": "ephemeral0"
+      }
+    ],
+    "launch_block_device_mappings": [
+      {
+          "device_name": "/dev/sdb",
+          "virtual_name": "ephemeral0"
+      }
+    ]
+  }],
+  "provisioners": [
+    {
+      "execute_command": "echo 'packer' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "scripts": [
+      ],
+      "type": "shell"
+    }
+  ]
+}
