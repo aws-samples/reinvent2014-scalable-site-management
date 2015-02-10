@@ -49,13 +49,14 @@ class Operation(object):
     def stack_id(self):
         if self._stack_id is None:
             stacks = self._make_api_call('opsworks', 'DescribeStacks')['Stacks']
+            stack_names = [stack['Name'] for stack in stacks]
             for stack in stacks:
                 stack_id = stack['StackId']
-                if self.stack_name == stack['Name'].lower():
+                if self.stack_name.lower() == stack['Name'].lower():
                     self._stack_id = stack_id
                     break
             else:
-                log("Stack {0} not found.  Aborting".format(self.stack_name))
+                log("Stack {0} not found.  Stacks found: {1}.  Aborting".format(self.stack_name, stack_names))
                 sys.exit(1)
         return self._stack_id
 
@@ -63,13 +64,14 @@ class Operation(object):
     def layer_id(self):
         if self._layer_id is None:
             layers = self._make_api_call('opsworks', 'DescribeLayers', stack_id=self.stack_id)['Layers']
+            layer_names = [each_layer['Name'] for each_layer in layers]
             for each_layer in layers:
                 layer_id = each_layer['LayerId']
-                if self.layer_name == each_layer['Name'].lower():
+                if self.layer_name.lower() == each_layer['Name'].lower():
                     self._layer_id = layer_id
                     break
             else:
-                log("No Layer found with name {0} in stack {1}.  Aborting".format(self.layer_name, self.stack_name))
+                log("No Layer found with name {0} in stack {1}.  Layers found: {2}.  Aborting".format(self.layer_name, self.stack_name, layer_names))
                 sys.exit(1)
         return self._layer_id
 
@@ -315,13 +317,14 @@ class Deploy(Operation):
     def application_id(self):
         if self._application_id is None:
             applications = self._make_api_call('opsworks', 'DescribeApps', stack_id=self.stack_id)
+            application_names = [each['Shortname'] for each in applications['Apps']]
             for each in applications['Apps']:
                 if each['Shortname'] == self.application_name:
                     self._application_id = each['AppId']
                     break
 
             if self._application_id is None:
-                log("Application {0} not found in stack {1}.  Aborting".format(self.application_name, self.stack_name))
+                log("Application {0} not found in stack {1}.  Applications found: {2}.  Aborting".format(self.application_name, self.stack_name, application_names))
                 sys.exit(1)
 
         return self._application_id
