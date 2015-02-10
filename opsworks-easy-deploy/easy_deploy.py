@@ -120,7 +120,7 @@ class Operation(object):
         healthy_threshold = describe_result['LoadBalancerDescriptions'][0]['HealthCheck']['HealthyThreshold']
         interval = describe_result['LoadBalancerDescriptions'][0]['HealthCheck']['Interval']
 
-        instance_healthy_wait = (healthy_threshold * interval)
+        instance_healthy_wait = ((healthy_threshold + 2) * interval)
         log("Added {0} to ELB {1}.  Sleeping for {2} seconds for it to be online".format(hostname, load_balancer_name, instance_healthy_wait))
         time.sleep(instance_healthy_wait)
 
