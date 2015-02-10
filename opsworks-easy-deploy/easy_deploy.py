@@ -377,7 +377,7 @@ def deploy(ctx, application):
 
 @cli.command(help='Execute operation on all hosts in the layer at once')
 @click.option('--stack-name', type=click.STRING, required=True, help='OpsWorks Stack name')
-@click.option('--layer-name', help='Layer to deploy application to')
+@click.option('--layer-name', type=click.STRING, required=True, help='Layer to deploy application to')
 @click.option('--exclude-hosts', '-x', default=None, help='Host names to exclude from deployment (comma separated list)')
 @click.option('--comment', help='Deployment message')
 @click.option('--timeout', default=None, help='Deployment timeout')
@@ -392,7 +392,7 @@ def all(ctx, stack_name, layer_name, exclude_hosts, comment, timeout):
 
 @cli.command(help='Rolling execution of operation to all hosts in the layer')
 @click.option('--stack-name', type=click.STRING, required=True, help='OpsWorks Stack name')
-@click.option('--layer-name', help='Layer to deploy application to')
+@click.option('--layer-name', type=click.STRING, required=True, help='Layer to deploy application to')
 @click.option('--comment', help='Deployment message')
 @click.option('--timeout', default=None, help='Deployment timeout')
 @click.pass_context
@@ -404,7 +404,7 @@ def rolling(ctx, stack_name, layer_name, comment, timeout):
 
 @cli.command(help='Execute operation on specific hosts')
 @click.option('--stack-name', type=click.STRING, required=True, help='OpsWorks Stack name')
-@click.option('--hosts', '-H', help='Host names to deploy application to (comma separated list)')
+@click.option('--hosts', '-H', type=click.STRING, required=True, help='Host names to deploy application to (comma separated list)')
 @click.option('--comment', help='Deployment message')
 @click.option('--timeout', default=None, help='Deployment timeout')
 @click.pass_context
