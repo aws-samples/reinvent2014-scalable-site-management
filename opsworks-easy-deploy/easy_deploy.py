@@ -275,12 +275,13 @@ class Update(Operation):
             time.sleep(self.reboot_delay)
 
     def _create_deployment_arguments(self, instance_ids, comment, custom_json):
+        parsed_custom_json = json.loads(custom_json)
         default_custom_json = {
             'dependencies': {
                 'allow_reboot': self.allow_reboot
             }
         }
-        custom_json.update(default_custom_json)
+        parsed_custom_json.update(default_custom_json)
         if self.amazon_linux_release is not None:
             custom_json['dependencies']['os_release_version'] = self.amazon_linux_release
 
@@ -289,7 +290,7 @@ class Update(Operation):
             'InstanceIds': instance_ids,
             'Command': {'Name': self.command},
             'Comment': comment,
-            'CustomJson': json.dumps(custom_json)
+            'CustomJson': json.dumps(parsed_custom_json)
         }
 
 
