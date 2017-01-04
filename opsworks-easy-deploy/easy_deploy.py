@@ -390,7 +390,7 @@ def all(ctx, stack_name, layer_name, exclude_hosts, comment, timeout):
 @click.option('--stack-name', type=click.STRING, required=True, help='OpsWorks Stack name')
 @click.option('--layer-name', type=click.STRING, required=True, help='Layer to deploy application to')
 @click.option('--comment', help='Deployment message')
-@click.option('--custom-json', default=None, help='Custom Json')
+@click.option('--custom-json', default='{}', help='Custom Json')
 @click.option('--timeout', default=None, help='Deployment timeout')
 @click.pass_context
 def rolling(ctx, stack_name, layer_name, comment, custom_json, timeout):
